@@ -1,0 +1,27 @@
+{
+    "name": "white-rabbit-1-sketch/php-file-hash-map",
+    "description": "This PHP library implements a simple Hash Map with file-based storage. It uses a hashing function to calculate an offset, which determines the location of the corresponding bucket in the file. Data is stored in a binary file, with each bucket containing key-value pairs. The library allows for efficient data retrieval through direct file access.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PhpFileHashMap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpFileHashMap\\Test\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mikhail Chuloshnikov"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-mbstring": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    }
+}

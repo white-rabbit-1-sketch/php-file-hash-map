@@ -1,0 +1,36 @@
+name: PHP Tests
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Install Xdebug
+        run: |
+          sudo apt install php8.1-xdebug
+
+      - name: Install dependencies
+        run: |
+          composer install
+
+      - name: Run tests
+        run: |
+          XDEBUG_MODE=coverag vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
