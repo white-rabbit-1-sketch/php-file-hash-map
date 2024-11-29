@@ -5,6 +5,34 @@
 
 `PhpFileHashMap` is a PHP implementation of a file-based hash map that stores key-value pairs in a binary file. The hash map operates on a file system level, which makes it suitable for handling large amounts of data with minimal memory usage. This implementation allows persisting hash map data to a file while providing standard hash map operations like `set`, `get`, `remove`, and more.
 
+## Table of Contents
+
+- [Php File Hash Map](#php-file-hash-map)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Creating a Hash Map](#creating-a-hash-map)
+  - [Adding Data](#adding-data)
+  - [Retrieving Data](#retrieving-data)
+  - [Removing Data](#removing-data)
+  - [Checking for Key Existence](#checking-for-key-existence)
+  - [Counting Active Buckets](#counting-active-buckets)
+  - [Iterating Over Keys and Values](#iterating-over-keys-and-values)
+  - [Clearing the Hash Map](#clearing-the-hash-map)
+- [Performance Benchmarks](#performance-benchmarks)
+- [Nuances and Performance Considerations](#nuances-and-performance-considerations)
+  - [Recommended Hash Map Size](#recommended-hash-map-size)
+  - [Data File and Custom Location](#data-file-and-custom-location)
+- [Serialization](#serialization)
+  - [Default Serialization](#default-serialization)
+  - [Serialization of Closures](#serialization-of-closures)
+- [Data File Structure](#data-file-structure)
+  - [Map Index Section](#map-index-section)
+  - [Heap Section](#heap-section)
+  - [File Layout Example](#file-layout-example)
+- [Author and License](#author-and-license)
+
+
 ## Features
 
 - **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
