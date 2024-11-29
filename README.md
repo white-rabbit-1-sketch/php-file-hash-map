@@ -23,9 +23,10 @@
 - [Nuances and Performance Considerations](#nuances-and-performance-considerations)
   - [Recommended Hash Map Size](#recommended-hash-map-size)
   - [Data File and Custom Location](#data-file-and-custom-location)
-- [Serialization](#serialization)
-  - [Serialization Override](#serialization-override)
-  - [Serialization of Closures](#serialization-of-closures)
+  - [Defragmentation](#defragmentation)
+  - [Serialization](#serialization)
+    - [Serialization Override](#serialization-override)
+    - [Serialization of Closures](#serialization-of-closures)
 - [Data File Structure](#data-file-structure)
   - [Map Index Section](#map-index-section)
   - [Heap Section](#heap-section)
@@ -163,8 +164,6 @@ $hashMap->defrag();
 ```
 
 Note: Defragmentation is a resource-intensive operation, especially for large hash maps, as it requires reading and rewriting the entire file. Therefore, it should be used carefully and ideally not too frequently.
-
-
 
 
 #### Serialization
