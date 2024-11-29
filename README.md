@@ -30,6 +30,7 @@
 - [Restrictions](#restrictions)
   - [Concurrent Access](#1-concurrent-access)
   - [Distributed Systems](#2-distributed-systems)
+- [Why Choose This Library Over SQLite?](#why-choose-this-library-over-sqlite)
 - [Data File Structure](#data-file-structure)
   - [Map Index Section](#1-map-index-section)
   - [Heap Section](#2-heap-section)
@@ -125,6 +126,7 @@ The performance of this file-based hash map may vary depending on the system con
 
 - **Read operations**: Up to **700,000 operations per second**.
 - **Write operations**: Up to **140,000 operations per second**.
+
 
 ## Nuances and Performance Considerations
 
@@ -243,6 +245,17 @@ Examples of how this can be addressed:
 
 These restrictions are by design to maintain the simplicity and portability of `PhpFileHashMap`, leaving implementation details of complex infrastructure to the developer.
 
+## Why Choose This Library Over SQLite?
+
+- **Performance**: This library outperforms SQLite in terms of raw speed. Benchmark tests show it can handle **700,000 reads** and **140,000 writes** per second, while SQLite is limited to **70,000 reads** and **4,000 writes** per second. This makes it a better choice for high-performance applications that require fast access to key-value data.
+
+- **Lightweight**: Unlike SQLite, which includes a full relational database engine, this library focuses purely on key-value storage. This minimalism reduces latency and avoids the overhead associated with SQL parsing and transaction management, making it faster and more efficient for simple use cases.
+
+- **No Database Overhead**: SQLite is designed for relational data storage and comes with features that aren't needed for basic key-value storage. If all you need is a fast, persistent key-value store, this library eliminates the complexities of relational databases and provides a streamlined solution.
+
+- **Customization and Control**: With this library, you have full control over the storage and retrieval logic. You can tailor it to meet your specific needs without being constrained by the rigid structure and limitations of SQLite.
+
+In summary, if you need a **high-performance, simple key-value storage solution** without the overhead of a full-fledged database engine, this library offers a more optimized, flexible, and customizable alternative to SQLite.
 
 ## Data File Structure
 
@@ -278,35 +291,36 @@ The rest of the heap consists of individual buckets, which contain the serialize
 
 ```
 +-----------------------------------------------+
-|                   File                       |
+|                   File                        |
 +-----------------------------------------------+
-| First part: $mapSize * INT_SIZE (offset cells) |
+| First part: $mapSize * INT_SIZE (offset cells)|
 +-----------------------------------------------+
-| $mapSize INT cells, each containing an offset to the heap area (each offset is 8 bytes) |
-|  - Cell 0: Offset for bucket 0               |
-|  - Cell 1: Offset for bucket 1               |
-|  - Cell 2: Offset for bucket 2               |
-|  ...                                         |
-|  - Cell X: Offset for bucket X               |
+| $mapSize INT cells, each containing an offset |
+| to the heap area (each offset is 8 bytes)     |
+|  - Cell 0: Offset for bucket 0                |
+|  - Cell 1: Offset for bucket 1                |
+|  - Cell 2: Offset for bucket 2                |
+|  ...                                          |
+|  - Cell X: Offset for bucket X                |
 +-----------------------------------------------+
-| Next: Heap area                              |
+| Next: Heap area                               |
 +-----------------------------------------------+
-| [Heap]                                       |
-|  - First two INT values:                     |
-|      - Active bucket count (INT)             |
-|      - Deleted bucket count (INT)            |
-|  - Bucket data:                              |
+| [Heap]                                        |
+|  - First two INT values:                      |
+|      - Active bucket count (INT)              |
+|      - Deleted bucket count (INT)             |
+|  - Bucket data:                               |
 |      +-----------------------------------+    |
-|      | Bucket 1                        |    |
+|      | Bucket 1                          |    |
 |      +-----------------------------------+    |
-|      |   - State (deleted or active) (INT)    |    |
-|      |   - Next bucket pointer (heap offset) (INT) |
-|      |   - Key size (INT)                    |    |
-|      |   - Key (string)                      |    |
-|      |   - Value size (INT)                 |    |
-|      |   - Value (serialized data)          |    |
+|      | - State (deleted or active) (INT) |    |
+|      | - Next bucket (heap offset) (INT) |    |
+|      | - Key size (INT)                  |    |
+|      | - Key (string)                    |    |
+|      | - Value size (INT)                |    |
+|      | - Value (serialized data)         |    |
 |      +-----------------------------------+    |
-|      | Bucket 2                        |    |
+|      | Bucket 2                          |    |
 |      +-----------------------------------+    |
 |      |   ...                             |    |
 |      +-----------------------------------+    |
