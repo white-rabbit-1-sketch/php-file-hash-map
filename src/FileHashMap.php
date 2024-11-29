@@ -134,10 +134,10 @@ class FileHashMap implements HashMapInterface
         fseek($this->fh, $heapTopOffset);
         fwrite($this->fh, pack('C', 1));
         fseek($this->fh, $heapTopOffset + self::BOOL_SIZE + self::INT_SIZE);
-        fwrite($this->fh, pack('P', mb_strlen($key)));
+        fwrite($this->fh, pack('P', strlen($key)));
         fwrite($this->fh, $key);
         $value = $this->serialize($value);
-        fwrite($this->fh, pack('P', mb_strlen($value)));
+        fwrite($this->fh, pack('P', strlen($value)));
         fwrite($this->fh, $value);
 
         // update pointer to a new bucket

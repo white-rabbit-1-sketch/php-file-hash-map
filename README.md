@@ -7,6 +7,8 @@
 
 ## Table of Contents
 
+## Table of Contents
+
 - [Php File Hash Map](#php-file-hash-map)
 - [Features](#features)
 - [Installation](#installation)
@@ -27,12 +29,14 @@
   - [Serialization](#serialization)
     - [Serialization Override](#serialization-override)
     - [Serialization of Closures](#serialization-of-closures)
+- [Restrictions](#restrictions)
+  - [Concurrent Access](#1-concurrent-access)
+  - [Distributed Systems](#2-distributed-systems)
 - [Data File Structure](#data-file-structure)
-  - [Map Index Section](#map-index-section)
-  - [Heap Section](#heap-section)
+  - [Map Index Section](#1-map-index-section)
+  - [Heap Section](#2-heap-section)
   - [File Layout Example](#file-layout-example)
 - [Author and License](#author-and-license)
-
 
 ## Features
 
@@ -218,6 +222,28 @@ class FileHashMapWithClosures extends FileHashMap
 }
 
 ```
+
+## Restrictions
+
+When using `PhpFileHashMap`, keep in mind the following limitations due to its file system-based storage:
+
+### 1. Concurrent Access
+
+If multiple processes attempt to access the same hash map file simultaneously, race conditions may occur. To ensure data integrity, **you must implement locking mechanisms** when working with the same file in parallel processes.
+
+Locking is intentionally **not implemented in this library** to keep it lightweight and to give developers the freedom to choose their preferred locking strategy. Examples of possible solutions include:
+- Using PHP's `flock()` function for file-level locks.
+- Implementing inter-process locks via shared memory or database-backed mutexes.
+
+### 2. Distributed Systems
+
+This library does not handle synchronization in distributed environments. If you need to share the same hash map file across multiple machines, synchronization must be implemented externally.
+
+Examples of how this can be addressed:
+- Use a distributed file system (e.g., NFS, GlusterFS) with appropriate locking mechanisms.
+- Employ a coordination service like **Zookeeper** for managing access and updates.
+
+These restrictions are by design to maintain the simplicity and portability of `PhpFileHashMap`, leaving implementation details of complex infrastructure to the developer.
 
 
 ## Data File Structure
