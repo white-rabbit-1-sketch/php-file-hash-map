@@ -1,2 +1,245 @@
-# php-file-hash-map
-This PHP library implements a simple Hash Map with file-based storage. It uses a hashing function to calculate an offset, which determines the location of the corresponding bucket in the file. Data is stored in a binary file, with each bucket containing key-value pairs. The library allows for efficient data retrieval through direct file access.
+# Php File Hash Map
+
+![Banner](readme/assets/img/banner.webp)
+
+
+`PhpFileHashMap` is a PHP implementation of a file-based hash map that stores key-value pairs in a binary file. The hash map operates on a file system level, which makes it suitable for handling large amounts of data with minimal memory usage. This implementation allows persisting hash map data to a file while providing standard hash map operations like `set`, `get`, `remove`, and more.
+
+## Features
+
+- **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
+- **Efficient memory usage**: Uses file storage to manage large datasets with low memory overhead.
+- **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
+- **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
+
+## Installation
+
+You can install `PhpFileHashMap` via Composer by adding the following to your `composer.json`:
+
+```bash
+composer require white-rabbit-1-sketch/php-file-hash-map
+```
+
+## Usage
+
+### Creating a Hash Map
+```php
+use PhpFileHashMap\FileHashMap;
+
+$hashMap = new FileHashMap(256); // Creates a hash map with a size of 256 buckets
+```
+
+### Adding Data
+```php
+$hashMap->set('key1', 'value1');
+$hashMap->set('key2', 'value2');
+```
+
+### Retrieving Data
+```php
+$value = $hashMap->get('key1');
+echo $value; // Outputs 'value1'
+```
+
+### Removing Data
+```php
+$hashMap->remove('key2');
+```
+
+### Checking for Key Existence
+```php
+if ($hashMap->has('key2')) {
+    echo "Key exists!";
+} else {
+    echo "Key does not exist!";
+}
+```
+
+### Removing Data
+```php
+echo $hashMap->count(); // Outputs the number of active buckets
+```
+
+### Iterating Over Keys and Values
+```php
+// Iterating over keys
+foreach ($hashMap->keys() as $key) {
+    echo $key . "\n";
+}
+
+// Iterating over values
+foreach ($hashMap->values() as $value) {
+    echo $value . "\n";
+}
+```
+
+### Clearing the Hash Map
+```php
+$hashMap->clear(); // Removes all keys and values
+```
+
+### Performance Benchmarks
+
+The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows:
+
+- **Read operations**: Up to **700,000 operations per second**.
+- **Write operations**: Up to **140,000 operations per second**.
+
+## Nuances and Performance Considerations
+
+This file-based hash map efficiently resolves collisions by utilizing chaining (linked lists of buckets). However, as the number of collisions increases, the performance may degrade. This degradation becomes particularly noticeable during write operations (insertion and deletion). Therefore, to ensure optimal performance, it is recommended to keep the hash map at a reasonable size relative to the expected number of elements.
+
+#### Recommended Hash Map Size
+
+For best performance, the size of the hash map should be chosen based on the estimated number of elements you plan to store. A good rule of thumb is to set the map size to a value that is roughly **1.5 to 2 times larger than the expected number of elements**. This helps reduce the likelihood of collisions and ensures fast access times.
+
+For example:
+- For up to 10,000 elements, consider a map size of 16,000 to 20,000.
+- For up to 100,000 elements, aim for a map size of 150,000 to 200,000.
+
+By keeping the number of collisions low, you maintain fast read and write speeds, especially in the case of write-heavy workloads.
+
+#### Data File and Custom Location
+
+By default, the hash map automatically creates a data file in the system's temporary directory. This file is used to store the hash map's data persistently.
+
+- **Default behavior**: The file will be created in the temporary directory (e.g., `/tmp` on Unix-based systems).
+- **Customization**: You can override this behavior and specify your own file location by providing a custom file path when constructing the hash map instance.
+
+```php
+use PhpFileHashMap\FileHashMap;
+
+$hashMap = new FileHashMap(256, destroyDataFileOnShutdown: true); // Deletes the file on shutdown
+```
+
+#### Serialization
+
+By default, this hash map uses PHP's built-in `serialize()` and `unserialize()` functions to handle the serialization of values stored in the map. This allows you to store any PHP data type, including objects, arrays, and other complex structures.
+
+##### Default Serialization
+
+The default methods for serializing and unserializing data are:
+
+```php
+protected function serialize(mixed $data): string
+{
+    return serialize($data);
+}
+
+protected function unserialize(string $data): mixed
+{
+    return unserialize($data);
+}
+```
+
+These methods can be easily overridden if you need to use a different serialization format (e.g., JSON, MessagePack, etc.) or a custom approach. By overriding these methods, you can control how data is converted before being stored in the hash map and after being retrieved.
+
+##### Serialization of Closures
+
+To handle this, you can use the **`opis/closure`** library to serialize and unserialize closures.
+
+To enable serialization of closures, you need to install the **`opis/closure`** library. This can be done via Composer:
+
+```bash
+composer require opis/closure
+```
+Once the library is installed, you can easily customize the serialization and unserialization methods of your hash map to handle closures. Here's an example of how to do it:
+
+```php
+use Opis\Closure\SerializableClosure;
+
+class FileHashMapWithClosures extends FileHashMap
+{
+    // Override the serialize method to handle closures
+    protected function serialize(mixed $data): string
+    {
+        return \Opis\Closure\serialize($data);
+    }
+
+    // Override the unserialize method to handle closures
+    protected function unserialize(string $data): mixed
+    {
+        return \Opis\Closure\unserialize($data);
+    }
+}
+
+```
+
+
+## Data File Structure
+
+The file structure of the hash map is designed to efficiently manage large amounts of data. It consists of two main sections: the **Map Index Section** and the **Heap Section**.
+
+#### 1. **Map Index Section**
+
+The Map Index Section is located at the beginning of the file. It contains a series of integers, each representing the offset of a bucket in the Heap Section. The number of entries in the index is equal to the number of buckets in the hash map.
+
+- **Size**: `$mapSize * INT_SIZE`
+- **Format**: The section contains a list of integers, each corresponding to the offset of a bucket in the heap.
+    - Example: If you have a hash map with 256 buckets, this section will consist of 256 integers.
+
+#### 2. **Heap Section**
+
+The Heap Section contains all the actual data for the hash map’s buckets. Each bucket is a block of data that includes the following elements:
+
+- **Bucket State (INT)**: An integer representing the state of the bucket. A value of `1` indicates that the bucket is active, and `0` indicates that the bucket is deleted.
+- **Next Bucket Pointer (P)**: A pointer (offset in the heap) to the next bucket in the chain (used for handling collisions).
+- **Key Size (INT)**: The size of the key in bytes.
+- **Key (string)**: The key itself.
+- **Value Size (INT)**: The size of the value in bytes.
+- **Value (serialized data)**: The serialized value associated with the key.
+
+Additionally, the Heap Section begins with two integers that hold the following data:
+
+- **Active Bucket Count (INT)**: The number of active (non-deleted) buckets in the hash map.
+- **Deleted Bucket Count (INT)**: The number of deleted buckets in the hash map.
+
+The rest of the heap consists of individual buckets, which contain the serialized data for each key-value pair.
+
+#### File Layout Example
+
+```
++-----------------------------------------------+
+|                   File                       |
++-----------------------------------------------+
+| First part: $mapSize * INT_SIZE (offset cells) |
++-----------------------------------------------+
+| $mapSize INT cells, each containing an offset to the heap area (each offset is 8 bytes) |
+|  - Cell 0: Offset for bucket 0               |
+|  - Cell 1: Offset for bucket 1               |
+|  - Cell 2: Offset for bucket 2               |
+|  ...                                         |
+|  - Cell X: Offset for bucket X               |
++-----------------------------------------------+
+| Next: Heap area                              |
++-----------------------------------------------+
+| [Heap]                                       |
+|  - First two INT values:                     |
+|      - Active bucket count (INT)             |
+|      - Deleted bucket count (INT)            |
+|  - Bucket data:                              |
+|      +-----------------------------------+    |
+|      | Bucket 1                        |    |
+|      +-----------------------------------+    |
+|      |   - State (deleted or active) (INT)    |    |
+|      |   - Next bucket pointer (heap offset) (INT) |
+|      |   - Key size (INT)                    |    |
+|      |   - Key (string)                      |    |
+|      |   - Value size (INT)                 |    |
+|      |   - Value (serialized data)          |    |
+|      +-----------------------------------+    |
+|      | Bucket 2                        |    |
+|      +-----------------------------------+    |
+|      |   ...                             |    |
+|      +-----------------------------------+    |
++-----------------------------------------------+
+
+```
+
+## Author and License
+
+**Author**: Mikhail Chuloshnikov
+
+**License**: MIT License
+
+This library is released under the MIT License. See the [LICENSE](LICENSE) file for more details.
