@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Xdebug
         run: |
-          sudo apt-get install php-xdebug
+          apt install php8.1-xdebug
 
       - name: Install dependencies
         run: |
