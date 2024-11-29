@@ -2,7 +2,7 @@
 
 ![Latest Version](https://img.shields.io/github/v/tag/white-rabbit-1-sketch/php-file-hash-map)
 ![Phpunit](https://img.shields.io/github/actions/workflow/status/white-rabbit-1-sketch/php-file-hash-map/.github%2Fworkflows%2Fphpunit.yml)
-![Code Coverage](https://img.shields.io/github/workflow/status/white-rabbit-1-sketch/php-file-hash-map/.github%2Fworkflows%2Fphpunit.yml)
+[![codecov](https://codecov.io/github/white-rabbit-1-sketch/php-file-hash-map/graph/badge.svg?token=3TJ9GL4OAS)](https://codecov.io/github/white-rabbit-1-sketch/php-file-hash-map)
 
 ![Banner](readme/assets/img/banner.webp)
 
