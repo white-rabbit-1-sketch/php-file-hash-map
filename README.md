@@ -7,8 +7,6 @@
 
 ## Table of Contents
 
-## Table of Contents
-
 - [Php File Hash Map](#php-file-hash-map)
 - [Features](#features)
 - [Installation](#installation)
