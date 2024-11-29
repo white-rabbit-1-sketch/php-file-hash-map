@@ -26,35 +26,36 @@ use PhpFileHashMap;
  * The file layout is as follows:
  *
  * +-----------------------------------------------+
- * |                   File                       |
+ * |                   File                        |
  * +-----------------------------------------------+
- * | First part: $mapSize * INT_SIZE (offset cells)     |
+ * | First part: $mapSize * INT_SIZE (offset cells)|
  * +-----------------------------------------------+
- * | $mapSize INT cells, each containing an offset to the heap area (each offset is 8 bytes) |
- * |  - Cell 0: Offset for bucket 0               |
- * |  - Cell 1: Offset for bucket 1               |
- * |  - Cell 2: Offset for bucket 2               |
- * |  ...                                         |
- * |  - Cell X: Offset for bucket X               |
+ * | $mapSize INT cells, each containing an offset |
+ * |  to the heap area (each offset is 8 bytes)    |
+ * |  - Cell 0: Offset for bucket 0                |
+ * |  - Cell 1: Offset for bucket 1                |
+ * |  - Cell 2: Offset for bucket 2                |
+ * |  ...                                          |
+ * |  - Cell X: Offset for bucket X                |
  * +-----------------------------------------------+
- * | Next: Heap area                              |
+ * | Next: Heap area                               |
  * +-----------------------------------------------+
- * | [Heap]                                       |
- * |  - First two INT values:                     |
- * |      - Active bucket count (INT)             |
- * |      - Deleted bucket count (INT)            |
- * |  - Bucket data:                              |
+ * | [Heap]                                        |
+ * |  - First two INT values:                      |
+ * |      - Active bucket count (INT)              |
+ * |      - Deleted bucket count (INT)             |
+ * |  - Bucket data:                               |
  * |      +-----------------------------------+    |
- * |      | Bucket 1                        |    |
+ * |      | Bucket 1                          |    |
  * |      +-----------------------------------+    |
- * |      |   - State (deleted or active) (INT)    |    |
- * |      |   - Next bucket pointer (heap offset) (INT) | |
- * |      |   - Key size (INT)                    |    |
- * |      |   - Key (string)                      |    |
- * |      |   - Value size (INT)                 |    |
- * |      |   - Value (serialized data)          |    |
+ * |      | - State (deleted or active) (INT) |    |
+ * |      | - Next bucket (heap offset) (INT) |    |
+ * |      |   - Key size (INT)                |    |
+ * |      |   - Key (string)                  |    |
+ * |      |   - Value size (INT)              |    |
+ * |      |   - Value (serialized data)       |    |
  * |      +-----------------------------------+    |
- * |      | Bucket 2                        |    |
+ * |      | Bucket 2                          |    |
  * |      +-----------------------------------+    |
  * |      |   ...                             |    |
  * |      +-----------------------------------+    |
