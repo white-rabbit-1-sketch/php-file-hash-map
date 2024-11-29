@@ -144,7 +144,7 @@ $hashMap = new FileHashMap(256, destroyDataFileOnShutdown: true); // Deletes the
 
 By default, this hash map uses PHP's built-in `serialize()` and `unserialize()` functions to handle the serialization of values stored in the map. This allows you to store any PHP data type, including objects, arrays, and other complex structures.
 
-##### Default Serialization
+##### Serialization override
 
 The default methods for serializing and unserializing data are:
 
