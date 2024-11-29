@@ -24,4 +24,4 @@ jobs:
 
       - name: Run tests
         run: |
-          vendor/bin/phpunit
+          vendor/bin/phpunit --coverage-text

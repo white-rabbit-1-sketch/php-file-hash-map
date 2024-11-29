@@ -1,5 +1,9 @@
 # Php File Hash Map
 
+![Latest Version](https://img.shields.io/github/v/tag/white-rabbit-1-sketch/php-file-hash-map)
+![Phpunit](https://img.shields.io/github/actions/workflow/status/white-rabbit-1-sketch/php-file-hash-map/.github%2Fworkflows%2Fphpunit.yml)
+![Code Coverage](https://img.shields.io/github/workflow/status/white-rabbit-1-sketch/php-file-hash-map/.github%2Fworkflows%2Fphpunit.yml)
+
 ![Banner](readme/assets/img/banner.webp)
 
 
