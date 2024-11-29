@@ -126,6 +126,10 @@ class FileHashMap implements HashMapInterface
                 }
             }
 
+            if (!$nextBucketOffset) {
+                break;
+            }
+
             $bucketOffset = $nextBucketOffset;
         }
 
@@ -162,7 +166,6 @@ class FileHashMap implements HashMapInterface
         $cellOffset = $this->getCellOffset($this->getIndexByKey($key));
         fseek($this->fh, $cellOffset);
         $bucketOffset = $this->unpack('P', fread($this->fh, self::INT_SIZE));
-
 
         while ($bucketOffset) {
             fseek($this->fh, $bucketOffset);

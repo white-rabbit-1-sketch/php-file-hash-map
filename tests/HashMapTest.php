@@ -154,4 +154,48 @@ class HashMapTest extends TestCase
         $this->assertEquals($data['key2'], $hashMap->get($key));
         $this->assertFalse($hashMap->has('key1'));
     }
+
+    public function testCollisions(): void
+    {
+        $hashMap = $this->getMockBuilder(FileHashMap::class)
+            ->onlyMethods(['getIndexByKey'])
+            ->setConstructorArgs([self::MAP_SIZE])
+            ->getMock();
+
+        $hashMap->method('getIndexByKey')
+            ->willReturn(42);
+
+        $data = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3'];
+        foreach ($data as $key => $value) {
+            $hashMap->set($key, $value);
+        }
+
+        foreach ($data as $key => $value) {
+            $this->assertEquals($value, $hashMap->get($key));
+        }
+
+        $data['key2'] = 'value22';
+        $hashMap->set('key2', $data['key2']);
+        foreach ($data as $key => $value) {
+            $this->assertEquals($value, $hashMap->get($key));
+        }
+
+        $hashMap->remove('key2');
+        unset($data['key2']);
+        foreach ($data as $key => $value) {
+            $this->assertEquals($value, $hashMap->get($key));
+        }
+
+        $data['key2'] = 'value222';
+        $hashMap->set('key2', $data['key2']);
+        foreach ($data as $key => $value) {
+            $this->assertEquals($value, $hashMap->get($key));
+        }
+
+        $data['key4'] = 'value4';
+        $hashMap->set('key4', $data['key4']);
+        foreach ($data as $key => $value) {
+            $this->assertEquals($value, $hashMap->get($key));
+        }
+    }
 }
