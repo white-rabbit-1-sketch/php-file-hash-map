@@ -28,4 +28,4 @@ jobs:
 
       - name: Run tests
         run: |
-          XDEBUG_MODE=coverag vendor/bin/phpunit --coverage-text
+          XDEBUG_MODE=coverag vendor/bin/phpunit --coverage-clover=coverage.xml
