@@ -24,4 +24,4 @@ jobs:
 
       - name: Run tests
         run: |
-          vendor/bin/phpunit --coverage-text
+          XDEBUG_MODE=coverag vendor/bin/phpunit --coverage-text
