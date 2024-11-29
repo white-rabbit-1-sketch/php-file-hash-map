@@ -139,4 +139,19 @@ class HashMapTest extends TestCase
         sort($hashMapValues);
         $this->assertEquals($data, $hashMapValues);
     }
+
+    public function testDefrag(): void
+    {
+        $hashMap = new FileHashMap(self::MAP_SIZE);
+        $data = ['key1' => 'value1', 'key2' => 'value2'];
+        foreach ($data as $key => $value) {
+            $hashMap->set($key, $value);
+        }
+
+        $hashMap->remove('key1');
+        $hashMap->defrag();
+
+        $this->assertEquals($data['key2'], $hashMap->get($key));
+        $this->assertFalse($hashMap->has('key1'));
+    }
 }

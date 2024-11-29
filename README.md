@@ -101,6 +101,16 @@ foreach ($hashMap->values() as $value) {
 }
 ```
 
+Both the `keys()` and `values()` methods iterate over all the elements in the hash map and return the respective keys and values.
+
+- **`keys()`**: Returns an iterator of all the keys in the hash map.
+- **`values()`**: Returns an iterator of all the values in the hash map.
+
+Both of these methods require scanning the entire hash map, including both the Map Index Section and the Heap Section, to collect the keys or values. This means that they need to read through all buckets, including any inactive (deleted) ones, and this can be **resource-intensive in terms of time** if the hash map contains a large number of entries or deleted buckets.
+
+However, it’s important to note that these operations **are not memory-intensive**. Since the methods use **generators**, they do not load all keys or values into memory at once, making them **efficient in terms of memory usage**. Only one key or value is held in memory at a time during iteration.
+
+
 ### Clearing the Hash Map
 ```php
 $hashMap->clear(); // Removes all keys and values
@@ -139,6 +149,23 @@ use PhpFileHashMap\FileHashMap;
 
 $hashMap = new FileHashMap(256, destroyDataFileOnShutdown: true); // Deletes the file on shutdown
 ```
+
+#### Defragmentation
+
+When keys are removed from the hash map, the corresponding buckets are not physically deleted from the file. Instead, they are marked as deleted. This is done to avoid the performance cost of file operations, as physically deleting data would require shifting the file contents, which can be expensive.
+
+However, over time, especially with many deletions, the file may accumulate a significant number of deleted buckets, which could reduce performance. In such cases, it is advisable to perform **defragmentation** to reclaim space and optimize the file layout.
+
+The `defrag()` method reorganizes the entire hash map file by recalculating the entire structure from scratch. This includes removing any deleted buckets and restructuring the map for better performance.
+
+```php
+$hashMap->defrag();
+```
+
+Note: Defragmentation is a resource-intensive operation, especially for large hash maps, as it requires reading and rewriting the entire file. Therefore, it should be used carefully and ideally not too frequently.
+
+
+
 
 #### Serialization
 

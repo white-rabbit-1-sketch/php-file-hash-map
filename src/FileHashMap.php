@@ -324,6 +324,22 @@ class FileHashMap implements HashMapInterface
         }
     }
 
+    public function defrag(): void
+    {
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'hashmap.data');
+        $tempHashMap = new self($this->mapSize, $tempFilePath);
+
+        foreach ($this->keys() as $key) {
+            $value = $this->get($key);
+            $tempHashMap->set($key, $value);
+        }
+
+        $this->closeDataFile();
+        $this->removeDataFile();
+        rename($tempFilePath, $this->filePath);
+        $this->openDataFile();
+    }
+
     protected function getIndexByKey(string $key): int
     {
         $hash = hash('sha256', $key);
