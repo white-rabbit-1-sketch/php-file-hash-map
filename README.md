@@ -48,7 +48,7 @@
 - **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
 - **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
 
-Warning!
+## Warning!
 This is not a data storage solution and was never intended to be used as one. Essentially, it is an implementation of the hash map data structure with data stored on disk, and its current applicability is specifically within this context. But of course, you can use it as storage if it suits your task and you understand all the nuances.
 
 ## Performance Benchmarks
