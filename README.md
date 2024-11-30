@@ -52,11 +52,11 @@
 
 The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows:
 
-File Hash Map: 140k writes, 280-700k reads (depends on data/buffering)
-Redis: 25k writes, 20k reads
-Memcached: 24k writes, 30k reads
-MySQL with Hash Index: 6k writes, 15k reads
-Aerospike: 5k writes, 5k reads
+- File Hash Map: 140k writes, 280-700k reads (depends on data/buffering)
+- Redis: 25k writes, 20k reads
+- Memcached: 24k writes, 30k reads
+- MySQL with Hash Index: 6k writes, 15k reads
+- Aerospike: 5k writes, 5k reads
 
 ## Installation
 
