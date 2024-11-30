@@ -13,6 +13,7 @@
 
 - [Php File Hash Map](#php-file-hash-map)
 - [Features](#features)
+- [Performance Benchmarks](#performance-benchmarks)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Creating a Hash Map](#creating-a-hash-map)
@@ -23,7 +24,6 @@
   - [Counting Active Buckets](#counting-active-buckets)
   - [Iterating Over Keys and Values](#iterating-over-keys-and-values)
   - [Clearing the Hash Map](#clearing-the-hash-map)
-- [Performance Benchmarks](#performance-benchmarks)
 - [Nuances and Performance Considerations](#nuances-and-performance-considerations)
   - [Recommended Hash Map Size](#recommended-hash-map-size)
   - [Data File and Custom Location](#data-file-and-custom-location)
@@ -47,6 +47,16 @@
 - **Efficient memory usage**: Uses file storage to manage large datasets with low memory overhead.
 - **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
 - **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
+
+## Performance Benchmarks
+
+The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows:
+
+File Hash Map: 140k writes, 280-700k reads (depends on data/buffering)
+Redis: 25k writes, 20k reads
+Memcached: 24k writes, 30k reads
+MySQL with Hash Index: 6k writes, 15k reads
+Aerospike: 5k writes, 5k reads
 
 ## Installation
 
@@ -123,16 +133,6 @@ However, it’s important to note that these operations **are not memory-intensi
 ```php
 $hashMap->clear(); // Removes all keys and values
 ```
-
-### Performance Benchmarks
-
-The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows:
-
-File Hash Map: 140k writes, 280-700k reads (depends on data/buffering)
-Redis: 25k writes, 20k reads
-Memcached: 24k writes, 30k reads
-MySQL with Hash Index: 6k writes, 15k reads
-Aerospike: 5k writes, 5k reads
 
 
 ## Nuances and Performance Considerations
