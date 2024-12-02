@@ -53,7 +53,7 @@ This is not a data storage solution and was never intended to be used as one. Es
 
 ## Performance Benchmarks
 
-The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows:
+The performance of this file-based hash map may vary depending on the system configuration and the number of elements. On my MacBook Air M2, the hash map performed as follows (single thread):
 
 - File Hash Map: 140k writes, 280-700k reads (depends on data/buffering)
 - Redis: 25k writes, 20k reads
