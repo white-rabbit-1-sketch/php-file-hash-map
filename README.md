@@ -104,7 +104,7 @@ if ($hashMap->has('key2')) {
 }
 ```
 
-### Removing Data
+### Counting Data
 ```php
 echo $hashMap->count(); // Outputs the number of active buckets
 ```
