@@ -11,6 +11,18 @@
 
 ---
 
+## Features
+
+- **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
+- **Efficient memory usage**: Uses file storage to manage large datasets with low memory overhead.
+- **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
+- **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
+
+## Warning!
+This is not a data storage solution and was never intended to be used as one. Essentially, it is an implementation of the hash map data structure with data stored on disk, and its current applicability is specifically within this context. But of course, you can use it as storage if it suits your task and you understand all the nuances.
+
+---
+
 ⭐️ Star the Project
 
 If you found this project useful, please consider giving it a star! 🌟 Your support helps improve the project and motivates us to keep adding new features and improvements. Thank you! 🙏
@@ -48,16 +60,6 @@ If you found this project useful, please consider giving it a star! 🌟 Your su
   - [Heap Section](#2-heap-section)
   - [File Layout Example](#file-layout-example)
 - [Author and License](#author-and-license)
-
-## Features
-
-- **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
-- **Efficient memory usage**: Uses file storage to manage large datasets with low memory overhead.
-- **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
-- **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
-
-## Warning!
-This is not a data storage solution and was never intended to be used as one. Essentially, it is an implementation of the hash map data structure with data stored on disk, and its current applicability is specifically within this context. But of course, you can use it as storage if it suits your task and you understand all the nuances.
 
 ## Performance Benchmarks
 
