@@ -9,8 +9,6 @@
 
 `PhpFileHashMap` is a PHP implementation of a file-based hash map that stores key-value pairs in a binary file. The hash map operates on a file system level, which makes it suitable for handling large amounts of data with minimal memory usage. This implementation allows persisting hash map data to a file while providing standard hash map operations like `set`, `get`, `remove`, and more.
 
----
-
 ## Features
 
 - **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
@@ -21,13 +19,9 @@
 ## Warning!
 This is not a data storage solution and was never intended to be used as one. Essentially, it is an implementation of the hash map data structure with data stored on disk, and its current applicability is specifically within this context. But of course, you can use it as storage if it suits your task and you understand all the nuances.
 
----
-
-⭐️ Star the Project
+## ⭐️ Star the Project
 
 If you found this project useful, please consider giving it a star! 🌟 Your support helps improve the project and motivates us to keep adding new features and improvements. Thank you! 🙏
-
----
 
 ## Table of Contents
 
