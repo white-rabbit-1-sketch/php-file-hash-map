@@ -11,7 +11,7 @@
 
 ## Features
 
-- **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends.
+- **Persistent storage**: The hash map data is stored in a binary file, allowing data persistence even after the script execution ends. 
 - **Efficient memory usage**: Uses file storage to manage large datasets with low memory overhead.
 - **Basic hash map operations**: Supports key-value insertion, retrieval, deletion, existence checks, and iteration.
 - **Collision handling**: The hash map handles collisions by chaining multiple buckets in the file.
